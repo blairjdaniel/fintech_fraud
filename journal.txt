@@ -1,0 +1,12 @@
+/blockchain-fraud-detection  
+  /data_pipeline  
+    ingest.py  
+    etl.sql  
+  /notebooks  
+    eda.ipynb  
+  /models  
+    train.py  
+    fraud_model.joblib  
+  /dashboard  
+    tableau_workbook.twbx  
+  README.md  
