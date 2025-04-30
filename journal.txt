@@ -1,12 +1,67 @@
-/blockchain-fraud-detection  
-  /data_pipeline  
-    ingest.py  
-    etl.sql  
-  /notebooks  
-    eda.ipynb  
-  /models  
-    train.py  
-    fraud_model.joblib  
-  /dashboard  
-    tableau_workbook.twbx  
-  README.md  
+A great way to leverage that rich, hourly OHLCV data is to build an end-to-end **Crypto Price Prediction & Insights Platform**. This will hit SQL, EDA, ML modeling, and dashboarding—showcasing the full lifecycle of a data product.
+
+---
+
+## 1. Ingest & Store (SQL)
+
+- **Warehouse:** Stand up a Postgres (or BigQuery) instance.
+- **Tables:**  
+  - `crypto_prices` (timestamp, symbol, open, high, low, close, volume, …)  
+- **ETL:**  
+  - Write a Python script that reads your CSVs for BTC, ETH, SOL, etc., and upserts into `crypto_prices`.  
+  - Schedule it via Airflow or a cron job so new hourly data lands automatically.
+
+## 2. Exploratory Data Analysis (EDA)
+
+- **SQL Queries + Pandas:**  
+  - Compute daily/hourly returns, realized volatility, volume spikes:  
+    ```sql
+    SELECT
+      symbol,
+      DATE_TRUNC('day', timestamp) AS day,
+      AVG((close - open)/open) AS avg_return,
+      STDDEV((close - open)/open) AS volatility
+    FROM crypto_prices
+    GROUP BY symbol, day;
+    ```  
+  - In a Jupyter notebook, pull these aggregates and visualize:  
+    - Time-series of returns vs. volatility per asset  
+    - Correlation heatmaps between assets’ returns  
+    - Volume-to-trade ratios over time  
+
+## 3. Feature Engineering & ML Modeling
+
+- **Features:**  
+  - Technical indicators (rolling means, RSI, MACD, Bollinger Bands)  
+  - Volume-based signals (hour-over-hour volume change, taker buy/sell ratios)  
+  - Time features (hour of day, day of week)  
+- **Label:**  
+  - **Classification:** Next-hour up/down movement (binary).  
+  - or **Regression:** Next-hour percent return.
+- **Modeling:**  
+  - Split by time (train on 2017–2022, test on 2023–today).  
+  - Train XGBoost (or a small neural net) via scikit-learn.  
+  - Evaluate with accuracy/ROC (for classification) or MAE/R² (for regression).  
+  - Serialize your best model with `joblib`.
+
+## 4. Dashboard & Insights (Tableau)
+
+- **Connect Tableau** to your Postgres `crypto_prices` and model output tables (e.g. `predictions`).
+- **Dashboard Components:**  
+  1. **Live Price Chart** with predicted next-hour direction highlighted.  
+  2. **Model Performance Panel:** Confusion matrix or error metrics over rolling windows.  
+  3. **Indicator Explorer:** Interactive selectors for symbol and date range showing key indicators vs. actual outcomes.  
+  4. **Anomaly Alerts:** Highlight hours where volume or price moved beyond historical thresholds.
+
+---
+
+### Why This Project?
+
+- **SQL:** Designing tables & writing analytical queries in your warehouse.  
+- **EDA:** Combining SQL + pandas to uncover patterns across multiple assets.  
+- **ML:** End-to-end feature engineering, modeling, validation, and serialization.  
+- **Dashboarding:** Bringing it all together in Tableau for a polished, interactive user experience.  
+
+This pipeline—illustrated with code, notebooks, and a live dashboard—will make a standout GitHub repo and LinkedIn project, demonstrating your ability to build a full-stack data science product on top of blockchain and financial data.
+
+Join the btc table with btc historical, then work on splitting it into the 4 halvings
