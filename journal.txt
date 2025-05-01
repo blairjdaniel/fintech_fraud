@@ -65,3 +65,23 @@ A great way to leverage that rich, hourly OHLCV data is to build an end-to-end *
 This pipeline—illustrated with code, notebooks, and a live dashboard—will make a standout GitHub repo and LinkedIn project, demonstrating your ability to build a full-stack data science product on top of blockchain and financial data.
 
 Join the btc table with btc historical, then work on splitting it into the 4 halvings
+
+Here are the dates of Bitcoin’s halving events to date:
+
+First halving: November 28, 2012 
+Bitbo Calendar
+
+Second halving: July 9, 2016 
+Bitbo Calendar
+
+Third halving: May 11, 2020 
+Bitbo Calendar
+
+Fourth halving: April 19, 2024 
+Bitbo Calendar
+
+Normalize each series to daily % change (e.g. (Pₜ/Pₜ₋₁) – 1), then compute rolling correlations or regress your asset’s returns on these benchmarks.
+
+Inflation-adjusted returns: deflate your asset’s nominal returns by daily TIPS breakeven to get real returns.
+
+Multi-factor analysis: build a simple linear model or PCA to see which “barometer” explains most of your asset’s daily variance.
